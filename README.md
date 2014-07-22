@@ -2,6 +2,10 @@
 
 This is a Scala SDK for accessing Microsoft OneDrive.
 
+Add to your SBT build with
+
+    libraryDependencies += "net.koofr" %% "driveby" % "0.1.2"
+
 ## Usage
 
 You need a Microsoft developer account and a created application.

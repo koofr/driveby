@@ -26,3 +26,36 @@ scalacOptions in Test ++= Seq("-Yrangepos")
 parallelExecution in Test := false
 
 testOptions in Test += Tests.Argument("sequential")
+
+publishMavenStyle := true
+
+publishArtifact in Test := false
+
+publishTo <<= isSnapshot { isSnapshot =>
+  val nexus = "https://oss.sonatype.org/"
+  if (isSnapshot) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else            Some("releases"  at nexus + "service/local/staging/deploy/maven2")
+}
+
+pomExtra := {
+    <inceptionYear>2014</inceptionYear>
+    <url>http://github.com/koofr/driveby</url>
+    <licenses>
+      <license>
+        <name>MIT License</name>
+        <url>http://www.opensource.org/licenses/mit-license.php</url>
+        <distribution>repo</distribution>
+      </license>
+    </licenses>
+    <scm>
+      <url>git@github.com:koofr/driveby.git</url>
+      <connection>scm:git:git@github.com:koofr/driveby</connection>
+    </scm>
+    <developers>
+      <developer>
+        <id>edofic</id>
+        <name>Andraz Bajt</name>
+        <url>https://github.com/edofic</url>
+      </developer>
+    </developers>
+  }

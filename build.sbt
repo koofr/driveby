@@ -11,14 +11,7 @@ resolvers += "Spray" at "http://repo.spray.io/"
 libraryDependencies ++= Seq(
   "io.spray" % "spray-client" % "1.3.1",
   "io.spray" %% "spray-json" % "1.2.6",
-  "com.typesafe.akka" % "akka-actor_2.10" % "2.3.3",
-  "com.typesafe.akka" % "akka-testkit_2.10" % "2.3.3",
-  "commons-codec" % "commons-codec" % "1.8",
-  "joda-time" % "joda-time" % "2.3",
-  "org.joda" % "joda-convert" % "1.5",
-  "org.slf4j" % "slf4j-api" % "1.7.2",
-  "org.specs2" %% "specs2" % "2.2.3" % "test",
-  "org.slf4j" % "slf4j-simple" % "1.7.2" % "test"
+  "com.typesafe.akka" %% "akka-actor" % "2.3.4"
 )
 
 scalacOptions in Test ++= Seq("-Yrangepos")

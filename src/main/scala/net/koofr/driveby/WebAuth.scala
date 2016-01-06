@@ -24,25 +24,26 @@ class WebAuth(clientId: String, clientSecret: String, redirectUrl: String)(impli
     sendReceive ~> unmarshal[UserAuth]
   }
 
-  def start(): String = {
-    s"https://login.live.com/oauth20_authorize.srf?client_id=$clientId&scope=wl.skydrive,wl.skydrive_update,wl.offline_access,wl.signin&response_type=code&redirect_uri=$redirectUrl"
+  def start(state: Option[String]): String = {
+    s"https://login.live.com/oauth20_authorize.srf?client_id=$clientId&scope=wl.skydrive,wl.skydrive_update,wl.offline_access,wl.signin&response_type=code&redirect_uri=$redirectUrl&state=${state.getOrElse("")}"
   }
 
   def finish(redirectedUrl: String): Future[UserAuth] = {
+    val rUri = Uri(redirectedUrl)
 
-    Uri(redirectedUrl).query.get("code").map { code =>
+    rUri.query.get("code").map { code =>
       val body = FormData(
         Map(
           "client_id" -> clientId,
           "client_secret" -> clientSecret,
           "code" -> code,
           "grant_type" -> "authorization_code",
-          "redirect_uri" -> redirectUrl
+          "redirect_uri" -> redirectUrl,
+          "state" -> rUri.query.get("state").getOrElse("")
         )
       )
       val req = Post("https://login.live.com/oauth20_token.srf", body)
       pipeline(req)
-
     } getOrElse Future.failed(new NoSuchElementException("cannot obtain `code` from redirectedUrl"))
   }
 
